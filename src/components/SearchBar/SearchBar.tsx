@@ -4,6 +4,7 @@ import axios from "axios";
 import { citiesEnvUri } from "../../utils/envVariables";
 import { CityInterface } from "../../utils/commonTypes";
 import { LoaderCircle, X } from "lucide-react";
+import debounce from "lodash/debounce";
 
 interface SearchBarProps {
   onSelect: (option: CityInterface | undefined) => void;
@@ -16,35 +17,32 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
   const [loading, setLoading] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<CityInterface[]>([]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-    setShowOptions(true);   
-  };
-
-  useEffect(() => {
-    if (!query) {
+  const fetchCities = debounce((value: string) => {
+    if (!value) {
       setFilteredOptions([]);
       return;
     }
+    setLoading(true);
+    axios
+      .get(citiesEnvUri, {
+        params: { name: value },
+        responseType: "json",
+      })
+      .then((response) => {
+        setFilteredOptions(response.data?.results || []);
+      })
+      .catch((error) => {
+        console.error("API call failed:", error);
+      })
+      .finally(() => setLoading(false));
+  }, 500);
 
-    const delayDebounce = setTimeout(() => {
-      setLoading(true);
-      axios
-        .get(citiesEnvUri, {
-          params: { name: query },
-          responseType: "json",
-        })
-        .then((response) => {
-          setFilteredOptions(response.data?.results || []);
-        })
-        .catch((error) => {
-          console.error("API call failed:", error);
-        })
-        .finally(() => setLoading(false));
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
-  }, [query]);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+    setShowOptions(true);
+    fetchCities(value);
+  };
 
   const handleOptionSelect = (option: CityInterface) => {
     setPlaceholder(`${option.name}, ${option.admin1}, ${option.country}`);
