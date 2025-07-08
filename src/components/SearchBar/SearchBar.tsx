@@ -11,6 +11,7 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
   const [query, setQuery] = useState("");
+  const [placeholder, setPlaceholder] = useState("");
   const [showOptions, setShowOptions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [filteredOptions, setFilteredOptions] = useState<CityInterface[]>([]);
@@ -46,9 +47,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
   }, [query]);
 
   const handleOptionSelect = (option: CityInterface) => {
-    setQuery(`${option.name}, ${option.admin1}, ${option.country}`);
+    setPlaceholder(`${option.name}, ${option.admin1}, ${option.country}`);
+    setQuery("");
+    onSelect && onSelect(option);
     setShowOptions(false);
-    if (onSelect) onSelect(option);
   };
 
   return (
@@ -56,7 +58,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
       <input
         type="text"
         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-white bg-white text-black pr-10"
-        placeholder="Search city..."
+        placeholder={`${!placeholder ? "Search city..." : placeholder}`}
         value={query}
         onChange={handleInputChange}
         onFocus={() => setShowOptions(true)}
@@ -69,7 +71,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
         </span>
       )}
       {/* Clear button */}
-      {!loading && query && (
+      {placeholder && (
         <button
           type="button"
           className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-white focus:outline-none"
