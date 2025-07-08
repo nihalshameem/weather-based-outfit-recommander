@@ -8,23 +8,13 @@ import axios from "axios";
 import { openWeatherEnvKey, weatherEnvUri } from "./utils/envVariables";
 import WeatherDisplay from "./components/WeatherDisplay";
 import RecentSearchList from "./components/RecentSearchList";
+import { addRecentSearch } from "./store/slices/citySearchSlice";
+import { useDispatch } from "react-redux";
 
 function App() {
+  const dispatch = useDispatch();
+
   const [weatherData, setWeatherData] = useState<WeatherApiResponse>();
-  const [recentSearch, setRecentSearch] = useState<CityInterface[]>([]);
-
-  const updateRecentSearches = (city: CityInterface) => {
-    setRecentSearch((prev) => {
-      // Remove duplicate if it exists
-      const filtered = prev.filter((item) => item.name !== city.name);
-
-      // Add new city at the beginning
-      const updated = [city, ...filtered];
-
-      // Keep only the first 5 items
-      return updated.slice(0, 5);
-    });
-  };
 
   const handleSelect = useCallback(
     async (option: CityInterface | undefined) => {
@@ -37,9 +27,8 @@ function App() {
           `${weatherEnvUri}?lat=${option.latitude}&lon=${option.longitude}&appid=${openWeatherEnvKey}`
         )
         .then((res) => {
-          console.log(res);
           res.data && setWeatherData(res.data);
-          updateRecentSearches(option);
+          dispatch(addRecentSearch(option));
         })
         .catch((error) => {
           console.error("API call failed:", error);
@@ -51,7 +40,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <div className="App  items-center mt-20 min-h-screen px-5">
+      <div className="App  items-center min-h-screen px-5">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -60,7 +49,7 @@ function App() {
         >
           <SearchBar onSelect={handleSelect} />
         </motion.div>
-        <RecentSearchList items={recentSearch} onSelect={handleSelect} />
+        <RecentSearchList onSelect={handleSelect} />
         {weatherData && <WeatherDisplay data={weatherData} />}
       </div>
     </>

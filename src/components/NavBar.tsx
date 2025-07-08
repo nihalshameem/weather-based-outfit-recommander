@@ -17,7 +17,7 @@ const NavBar: React.FC = () => {
   }, [darkMode]);
 
   return (
-    <nav className="w-full bg-white dark:bg-gray-900 shadow px-4 py-3 flex items-center justify-between">
+    <nav className="w-full bg-white dark:bg-gray-900 shadow px-4 py-3 flex items-center justify-between mb-20">
       <div className="text-xl font-bold text-gray-800 dark:text-white">
         WeatherFit
       </div>
