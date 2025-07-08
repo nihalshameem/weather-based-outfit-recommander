@@ -1,46 +1,131 @@
-# Getting Started with Create React App
+# 🌦️ Weather-Based Outfit Recommender
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple, elegant React + TypeScript app that lets users search for the current weather in any city and get real-time outfit suggestions based on conditions like temperature, humidity, and weather type.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 🔍 Core Functionality
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- **City Search Input**
+  - Enter any city name to fetch weather data (using OpenWeatherMap or a mock API).
+  
+- **Weather Display**
+  - Shows:
+    - Temperature
+    - Weather condition (e.g., sunny, cloudy, rainy)
+    - Wind speed
+    - Humidity
+  
+- **Outfit Recommendation**
+  - Smart suggestions like:
+    - "Take an umbrella"
+    - "Wear a jacket"
+    - "Put on sunglasses"
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- **Search History**
+  - Displays the last 5 searched cities (in-memory only).
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🛠️ Technical Stack
 
-### `npm run build`
+- **React** with **TypeScript**
+- **Redux Toolkit** for state management
+- **Tailwind CSS** for styling
+- **ESLint + Prettier** for clean, consistent code
+- **Flat ESLint config** with proper environment handling
+- **OpenWeatherMap API** (or mock)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🎁 Bonus Features (Planned)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 🔄 **Auto-suggest** on city input (debounced search)
+- 🌗 **Theme toggle** (light/dark)
+- 🎞️ **Smooth animations** for card transitions and weather state changes
+- 📶 **Offline behavior mocking** with retry logic
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## 📁 Folder Structure (Planned)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+src/
+├── api/               # Weather API logic (real or mocked)
+├── components/        # UI components (SearchBar, WeatherCard, HistoryList, etc.)
+├── features/          # Redux slices and feature-specific logic
+├── hooks/             # Custom hooks
+├── utils/             # Utility functions (e.g., recommendation logic)
+├── assets/            # Icons, images
+├── App.tsx
+├── index.tsx
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## ⚙️ Setup & Run
 
-## Learn More
+```bash
+# Clone the repo
+git clone https://github.com/nihalshameem/weather-based-outfit-recommander.git
+cd weather-based-outfit-recommander
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install dependencies
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Copy the example environment file and update URIs
+cp .env.example .env
+# Edit .env to set your OpenWeatherMap API key and any external URIs
+
+# Start dev server
+npm run start
+```
+
+> Tailwind, Redux Toolkit, ESLint, and TypeScript are already pre-configured.
+
+---
+
+## 📦 Available Scripts
+
+| Command            | Description                  |
+|--------------------|------------------------------|
+| `npm run start`    | Start development server     |
+| `npm run lint`     | Run ESLint checks            |
+| `npm run build`    | Production build             |
+| `npm run preview`  | Preview production build     |
+
+---
+
+## 🔒 Error Handling
+
+- Invalid city? You'll get a helpful toast or message.
+- API failure? Displays a user-friendly fallback and retry option.
+
+---
+
+## 📜 License
+
+MIT © [Your Name]
+
+---
+
+## 🙏 Acknowledgements
+
+- [OpenWeatherMap](https://openweathermap.org/api) — for the weather API
+- [Tailwind CSS](https://tailwindcss.com)
+- [Redux Toolkit](https://redux-toolkit.js.org)
+
+---
+
+## ✨ Roadmap
+
+- [ ] Add unit tests
+- [ ] Integrate auto-suggest with debounce
+- [ ] Add offline retry queue
+- [ ] Polish with framer-motion or CSS animations
+
+---
+
+> Made with 💙 to help you dress for the weather, always.
