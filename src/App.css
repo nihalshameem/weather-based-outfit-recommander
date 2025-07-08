@@ -32,7 +32,24 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
+
+/* Change scrollbar color to purple and make scrollbar thumb small */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+}
+
