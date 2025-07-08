@@ -6,7 +6,7 @@ import { CityInterface } from "../../utils/commonTypes";
 import { LoaderCircle, X } from "lucide-react";
 
 interface SearchBarProps {
-  onSelect?: (option: CityInterface) => void;
+  onSelect?: (option: CityInterface | undefined) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
@@ -54,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
   };
 
   return (
-    <div className="relative w-full max-w-md mx-auto search-input-div">
+    <div className="relative w-full max-w-md mx-auto search-input-div mt-20">
       <input
         type="text"
         className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-900 dark:text-white bg-white text-black pr-10"
@@ -79,6 +79,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect }) => {
             setQuery("");
             setFilteredOptions([]);
             setShowOptions(false);
+            setPlaceholder("");
+            onSelect && onSelect(undefined);
           }}
           tabIndex={-1}
         >

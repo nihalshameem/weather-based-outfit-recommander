@@ -1,22 +1,50 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import "./App.css";
 import SearchBar from "./components/SearchBar/SearchBar";
 import { motion } from "framer-motion";
 import NavBar from "./components/NavBar";
+import { CityInterface, WeatherApiResponse } from "./utils/commonTypes";
+import axios from "axios";
+import { openWeatherEnvKey, weatherEnvUri } from "./utils/envVariables";
+import WeatherDisplay from "./components/WeatherDisplay";
 
 function App() {
+  const [weatherData, setWeatherData] = useState<WeatherApiResponse>();
+
+  const handleSelect = useCallback(
+    async (option: CityInterface | undefined) => {
+      if (!option) {
+        setWeatherData(undefined);
+        return;
+      }
+      await axios
+        .get(
+          `${weatherEnvUri}?lat=${option.latitude}&lon=${option.longitude}&appid=${openWeatherEnvKey}`
+        )
+        .then((res) => {
+          console.log(res);
+          res.data && setWeatherData(res.data);
+        })
+        .catch((error) => {
+          console.error("API call failed:", error);
+        });
+    },
+    []
+  );
+
   return (
     <>
       <NavBar />
-      <div className="App flex items-center justify-center min-h-screen px-5">
+      <div className="App  items-center mt-20 min-h-screen px-5">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="search-input-div"
         >
-          <SearchBar />
+          <SearchBar onSelect={handleSelect} />
         </motion.div>
+        {weatherData && <WeatherDisplay data={weatherData} />}
       </div>
     </>
   );
